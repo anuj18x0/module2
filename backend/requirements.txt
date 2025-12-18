@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+pymongo
+requests
+google-cloud-aiplatform
+google-generativeai
+pillow
+wkhtmltopdf
+imgkit
