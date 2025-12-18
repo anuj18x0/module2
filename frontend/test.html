@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Market Update</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette Redesign: Richer Blues and Vibrant Cyan Accent */
+            --primary-dark: #0f172a; /* Deep Midnight */
+            --primary-light: #334155; /* Slate */
+            --accent: #06b6d4; /* Vibrant Cyan/Teal */
+            
+            --bg-body: #f0f2f5;
+            --bg-card: #ffffff;
+            --bg-accent-subtle: #ecfeff; /* Very light cyan for backgrounds */
+
+            --positive: #10b981; /* Emerald Green */
+            --negative: #ef4444; /* Red */
+            --text-muted: #64748b;
+
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            /* Subtle background pattern */
+            background-image: radial-gradient(var(--primary-light) 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            padding: 40px;
+            color: var(--primary-dark);
+            display: flex;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .stat-current, .value {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Main Container */
+        .infographic-container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--bg-card);
+            box-shadow: var(--shadow-lg);
+            border-radius: 16px; /* Softer corners */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header --- */
+        header {
+            /* Gradient background for premium feel */
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1e293b 100%);
+            color: white;
+            padding: 35px 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        /* Subtle accent line top */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--accent);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-top: 5px;
+        }
+
+        header .subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--accent); /* Accent color for subtitles */
+        }
+
+        /* --- Poster Metrics (Top Row) --- */
+        .poster-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            padding: 35px 45px;
+            background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .metric-highlight {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .metric-highlight:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent);
+        }
+
+        .metric-highlight .label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .metric-highlight .value {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .metric-highlight .trend-pill {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        /* --- Main Statistics Section --- */
+        .main-stats-section {
+            padding: 45px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+        }
+        
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 24px;
+            background: var(--accent);
+            margin-right: 15px;
+            border-radius: 4px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #f1f5f9;
+        }
+        
+        /* Subtle accent glow on hover */
+        .stat-card:hover {
+             box-shadow: var(--shadow-lg);
+             border-color: var(--bg-accent-subtle);
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover::after {
+            transform: scaleX(1);
+        }
+
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-label-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stat-icon {
+            color: var(--accent);
+            opacity: 0.8;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-current {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            line-height: 1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .stat-change {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+        
+        .stat-change.trend-up { background: #ecfdf5; color: var(--positive); }
+        .stat-change.trend-down { background: #fef2f2; color: var(--negative); }
+
+        .stat-footer {
+            padding-top: 15px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .stat-footer strong {
+            color: var(--primary-light);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* --- Benchmark Narratives --- */
+        .narratives-section {
+            padding: 0 45px 45px 45px;
+            flex-grow: 1;
+            background: linear-gradient(to bottom, white, #f8fafc);
+        }
+
+        .narratives-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .narrative-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            border-top: 5px solid var(--accent);
+            border-bottom: 1px solid #f1f5f9;
+            border-left: 1px solid #f1f5f9;
+            border-right: 1px solid #f1f5f9;
+        }
+
+        .prop-type {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .prop-price {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .prop-desc {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        /* --- Footer --- */
+        .infographic-footer {
+            background: var(--primary-dark);
+            color: #ffffff;
+            padding: 30px 45px;
+            margin-top: auto;
+            position: relative;
+        }
+        
+        /* Accent line top of footer */
+         .infographic-footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent);
+            opacity: 0.5;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Link Styling - White, not Blue, with accent hover */
+        .footer-link {
+            color: #ffffff !important; /* Force white */
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.1);
+            color: var(--accent) !important; /* Accent color on hover */
+        }
+        
+        .footer-link svg {
+            transition: stroke 0.3s ease;
+        }
+        .footer-link:hover svg {
+             stroke: var(--accent);
+        }
+
+
+        /* --- Utility Classes --- */
+        .trend-up { color: var(--positive); background: #ecfdf5; }
+        .trend-down { color: var(--negative); background: #fef2f2; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .infographic-container { border-radius: 8px; }
+            header { padding: 25px 20px; flex-direction: column; align-items: flex-start; gap: 15px; }
+            header h1 { font-size: 2rem; }
+            .poster-metrics, .main-stats-section, .narratives-section, .infographic-footer { padding: 25px 20px; }
+            .stats-grid, .narratives-grid { grid-template-columns: 1fr; gap: 20px; }
+            .stat-current { font-size: 2.2rem; }
+            .footer-content { flex-direction: column; gap: 15px; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="infographic-container">
+        <header>
+            <div>
+                <div class="subtitle">Market Report</div>
+                <h1 id="location_title"></h1>
+            </div>
+            <div style="text-align: right;">
+                <div class="subtitle" style="color: rgba(255,255,255,0.8);" id="current_date"></div>
+            </div>
+        </header>
+
+        <div class="poster-metrics" id="poster_metrics_container">
+            </div>
+
+        <div class="main-stats-section">
+            <h2 class="section-title">Market Activity</h2>
+            <div class="stats-grid" id="main_stats_container">
+                </div>
+        </div>
+
+        <div class="narratives-section">
+            <h2 class="section-title">Benchmark Price Analysis</h2>
+            <div class="narratives-grid" id="narratives_container">
+                </div>
+        </div>
+
+        <footer class="infographic-footer">
+            <div class="footer-content">
+                <a href="mailto:info@realtygenie.co" class="footer-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    info@realtygenie.co
+                </a>
+                
+                <a href="https://www.realtygenie.co" target="_blank" class="footer-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    www.realtygenie.co
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ---------------------------------------------------------
+        // 1. THE DATA
+        // ---------------------------------------------------------
+        const data = {
+            "location_title": "GREATER VANCOUVER",
+            // Added an 'icon' property to the data structure for visual enhancement
+            "main_statistics": [
+                {
+                    "label": "NEW LISTINGS",
+                    "icon": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
+                    "current": "2,210",
+                    "pct_change": -25.5,
+                    "prev_month": "2,967",
+                    "prev_year": "2,367 (-6.6%)"
+                },
+                {
+                    "label": "ACTIVE LISTINGS",
+                    "icon": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>',
+                    "current": "8,500",
+                    "pct_change": 15.2,
+                    "prev_month": "7,380",
+                    "prev_year": "6,000 (+41.6%)"
+                },
+                {
+                    "label": "TOTAL SALES",
+                    "icon": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>',
+                    "current": "1,450",
+                    "pct_change": -4.2,
+                    "prev_month": "1,515",
+                    "prev_year": "1,300 (+11.5%)"
+                },
+                {
+                    "label": "AVERAGE PRICE",
+                    "icon": '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
+                    "current": "$1,245,600",
+                    "pct_change": 1.5,
+                    "prev_month": "$1,227,000",
+                    "prev_year": "$1,190,000 (+4.6%)"
+                }
+            ],
+            "benchmark_price_narratives": [
+                {
+                    "type": "Single Family Detached",
+                    "price": "$1,405,500",
+                    "description": "The benchmark price for a detached home decreased 0.6% in the past month to $1,405,500, down 6.8% from last year."
+                },
+                {
+                    "type": "Townhomes",
+                    "price": "$876,200",
+                    "description": "Townhome activity remains steady. Prices have adjusted slightly upwards by 0.4% compared to last month."
+                },
+                {
+                    "type": "Apartments",
+                    "price": "$765,800",
+                    "description": "Condo inventory has increased, putting downward pressure on prices. The benchmark price dropped 1.1% month-over-month."
+                }
+            ],
+            "poster_metrics": [
+                {
+                    "label": "Active Listings",
+                    "value": "13,245",
+                    "change": "+5.2%",
+                    "trend": "up"
+                },
+                {
+                    "label": "Days on Market",
+                    "value": "34",
+                    "change": "-2 Days",
+                    "trend": "down" 
+                },
+                {
+                    "label": "Sales to Active",
+                    "value": "18.5%",
+                    "change": "-1.2%",
+                    "trend": "down"
+                }
+            ]
+        };
+
+        // ---------------------------------------------------------
+        // 2. RENDER LOGIC
+        // ---------------------------------------------------------
+
+        // Header
+        document.getElementById('location_title').innerText = data.location_title;
+        document.getElementById('current_date').innerText = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+
+        // Helper
+        const getTrendVisuals = (changeVal) => {
+            const isPositive = changeVal > 0;
+            return {
+                // Updated classes for new visual style
+                class: isPositive ? 'trend-up' : 'trend-down',
+                arrow: isPositive ? '▲' : '▼',
+                displayVal: Math.abs(changeVal) + '%'
+            };
+        };
+
+        // Render Poster Metrics
+        const metricsContainer = document.getElementById('poster_metrics_container');
+        data.poster_metrics.forEach(metric => {
+            const trendClass = metric.trend === 'up' ? 'trend-up' : 'trend-down';
+            const arrow = metric.trend === 'up' ? '▲' : '▼';
+            metricsContainer.innerHTML += `
+                <div class="metric-highlight">
+                    <div class="label">${metric.label}</div>
+                    <div class="value">${metric.value}</div>
+                    <div class="trend-pill ${trendClass}">${arrow} ${metric.change}</div>
+                </div>
+            `;
+        });
+
+        // Render Main Stats
+        const statsContainer = document.getElementById('main_stats_container');
+        data.main_statistics.forEach(stat => {
+            const trend = getTrendVisuals(stat.pct_change);
+            statsContainer.innerHTML += `
+                <div class="stat-card">
+                    <div class="stat-card-header">
+                        <div class="stat-label-group">
+                            <span class="stat-icon">${stat.icon}</span>
+                            <span class="stat-label">${stat.label}</span>
+                        </div>
+                        <div class="stat-change ${trend.class}">
+                            <span>${trend.arrow}</span>
+                            <span>${trend.displayVal}</span>
+                        </div>
+                    </div>
+                    <div class="stat-current">${stat.current}</div>
+                    <div class="stat-footer">
+                        <div><strong>Prev Month:</strong> ${stat.prev_month}</div>
+                        <div style="text-align:right"><strong>Prev Year:</strong> ${stat.prev_year}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Render Narratives
+        const narrativeContainer = document.getElementById('narratives_container');
+        data.benchmark_price_narratives.forEach(item => {
+            narrativeContainer.innerHTML += `
+                <div class="narrative-card">
+                    <span class="prop-type">${item.type}</span>
+                    <span class="prop-price">${item.price}</span>
+                    <p class="prop-desc">${item.description}</p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

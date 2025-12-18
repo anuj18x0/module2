@@ -1,0 +1,520 @@
+:root {
+  --primary-red: #D71920;
+  --primary-red-light: #FF2A35;
+  --accent-gold: #FFD700;
+  --bg-dark: #1a1a1a;
+  --text-dark: #1f1f1f;
+  --text-light: #ffffff;
+  --text-grey: #6b7280;
+  --card-bg: rgba(255, 255, 255, 0.98);
+  --gradient-primary: linear-gradient(135deg, #D71920 0%, #FF2A35 100%);
+  --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  --font-main: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.infographic-container {
+  font-family: var(--font-main);
+  width: 1080px;
+  height: 1350px;
+  margin: 0 auto;
+  background: linear-gradient(to bottom, #ffffff 0%, #f9fafb 100%);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  overflow: hidden;
+  position: relative;
+}
+
+/* HEADER - Modern Gradient */
+.main-header {
+  background: var(--gradient-primary);
+  color: white;
+  text-align: center;
+  padding: 25px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+}
+
+.main-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.red-underline {
+  height: 3px;
+  width: 80px;
+  background: var(--accent-gold);
+  margin: 8px auto;
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 15px rgba(255, 215, 0, 0.5);
+}
+
+.main-header h2 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 3px;
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+  opacity: 0.95;
+}
+
+/* HERO SECTION - Instagram Optimized */
+.hero-section {
+  position: relative;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.hero-bg-image {
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-bg-image::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
+}
+
+.hero-bg-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(1.05) saturate(1.1);
+}
+
+/* STATS CARD - Glassmorphism Design */
+.stats-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  width: 90%;
+  margin: -240px auto 0;
+  padding: 25px 25px;
+  border-radius: 25px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15), 
+              0 0 0 1px rgba(255,255,255,0.3) inset;
+  text-align: center;
+  z-index: 10;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--gradient-primary);
+  border-radius: 30px 30px 0 0;
+}
+
+.card-branding {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-logo {
+  max-width: 160px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+}
+
+.brand-placeholder {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--bg-dark);
+  border-bottom: 4px solid var(--primary-red);
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.brand-sub {
+  font-size: 0.85rem;
+  color: var(--text-grey);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.report-title {
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  margin: 15px 0 20px;
+  color: var(--text-dark);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.report-title .date {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* GRID LAYOUT - Enhanced */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  padding: 18px 12px;
+  border-radius: 15px;
+  border: 2px solid rgba(215, 25, 32, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-column::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.icon-wrapper {
+  background: linear-gradient(135deg, rgba(215, 25, 32, 0.1) 0%, rgba(255, 42, 53, 0.15) 100%);
+  padding: 10px;
+  border-radius: 50%;
+  color: var(--primary-red);
+  margin-bottom: 8px;
+  box-shadow: 0 4px 15px rgba(215, 25, 32, 0.2);
+}
+.icon-wrapper svg {
+  width: 36px;
+  height: 36px;
+  stroke-width: 2.5;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-main-value {
+  margin-bottom: 8px;
+}
+
+.stat-main-value .value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 3px;
+  line-height: 1;
+}
+
+.pct-change {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 15px;
+  display: inline-block;
+}
+
+.text-green { 
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+.text-red { 
+  color: var(--primary-red);
+  background: rgba(215, 25, 32, 0.1);
+}
+
+/* Comparison Rows - Enhanced */
+.comparison-rows {
+  font-size: 0.7rem;
+  color: var(--text-grey);
+  width: 100%;
+  background: rgba(0,0,0,0.02);
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 8px;
+}
+
+.comp-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+
+.comp-row:last-child {
+  margin-bottom: 0;
+}
+
+.comp-label {
+  font-weight: 600;
+}
+
+.comp-val {
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* Card Footer */
+.card-footer {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-top: 2px solid rgba(215, 25, 32, 0.1);
+  padding-top: 12px;
+  margin-top: 12px;
+  color: var(--text-dark);
+}
+
+.source-text {
+  font-size: 0.55rem;
+  color: var(--text-grey);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* BENCHMARK SECTION - Modern Card Design */
+.benchmark-section {
+  background: var(--gradient-dark);
+  color: white;
+  padding: 45px 40px;
+  text-align: left;
+  position: relative;
+}
+
+.benchmark-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><defs><pattern id=\"dots\" width=\"20\" height=\"20\" patternUnits=\"userSpaceOnUse\"><circle cx=\"2\" cy=\"2\" r=\"1\" fill=\"rgba(255,255,255,0.05)\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23dots)\"/></svg>');
+  opacity: 0.5;
+}
+
+.benchmark-section h4 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.benchmark-section h4::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: var(--accent-gold);
+  margin-top: 12px;
+  border-radius: 2px;
+}
+
+.benchmark-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.benchmark-item {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.benchmark-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(5px);
+}
+
+.benchmark-item p {
+  margin: 0;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.benchmark-item strong {
+  color: var(--accent-gold);
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.highlight-price {
+  color: var(--accent-gold);
+  font-weight: 900;
+  font-size: 1.25rem;
+  text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+/* FOOTER - Premium Design */
+.realty-genie-footer {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+  color: white;
+  padding: 20px 30px 18px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.realty-genie-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-brand h2 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin: 0 0 5px 0;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+
+.footer-tagline {
+  font-size: 0.75rem;
+  color: #b0b0b0;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.footer-contact {
+  display: flex;
+  gap: 25px;
+  font-size: 0.8rem;
+  margin-top: 3px;
+}
+
+.footer-contact p {
+  margin: 0;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.footer-disclaimer {
+  font-size: 0.6rem;
+  color: #808080;
+  max-width: 900px;
+  line-height: 1.4;
+  margin-top: 3px;
+}
+
+.footer-disclaimer p {
+  margin: 0;
+}
+
+/* Scale for Instagram 1080x1350 */
+@media (max-width: 1080px) {
+  .infographic-container {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1080 / 1350;
+  }
+}
+
+/* Mobile fallback (keep 2-column grid) */
+@media (max-width: 768px) {
+  .infographic-container {
+    width: 100%;
+  }
+  .main-header h1 { 
+    font-size: 2.5rem; 
+  }
+  .stats-card { 
+    width: 92%; 
+  }
+  .icon-wrapper svg {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .main-header h1 { 
+    font-size: 2rem; 
+  }
+  .stats-grid {
+    gap: 20px;
+  }
+  .stat-main-value .value {
+    font-size: 1.8rem;
+  }
+}

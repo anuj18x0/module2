@@ -1,0 +1,134 @@
+prompt = """
+You are a senior real estate economist and marketing strategist. Analyze the attached GVREALTORS monthly market report PDF and produce a highly valuable, client-ready and realtor-ready insight package. Use ONLY the data inside the PDF.
+
+IMPORTANT:
+Return the entire output ONLY as a valid JSON object following the schema below. All partitions must be filled completely with ACTUAL DATA from the PDF. Text inside each partition should follow the content requirements described. Use clean, structured GitHub-flavored Markdown inside JSON string values. Include multiple data tables in text partitions using Markdown table syntax.
+
+JSON Schema (must match exactly):
+
+{
+  "partition_1_executive_summary": "250–300 word executive summary in Markdown with embedded data tables.",
+  "partition_2_key_market_metrics": {
+    "table_markdown": "Markdown table of benchmark prices with MoM, QoQ, 6M, 1Y % changes.",
+    "highlights": "Bullet points summarizing key metric changes using Markdown bullet format (start each line with '- ' or '* ').",
+    "table_struct": [
+        {
+        "area": "string",                         // e.g., "Burnaby", "Greater Vancouver"
+        "property_type": "string",                // "Detached", "Townhouse", "Apartment", "Composite"
+
+        "benchmark_price": number,                // numeric only
+        "price_index": number,                    // numeric only
+
+        "change_1_month_pct": number,
+        "change_3_month_pct": number,
+        "change_6_month_pct": number,
+        "change_1_year_pct": number,
+        "change_3_year_pct": number,
+        "change_5_year_pct": number,
+        "change_10_year_pct": number,
+
+        "total_sales": number,                    // from sales tables
+        "total_listings": number,                 // from listings tables
+        "sales_to_active_ratio_pct": number       // numeric only, e.g., 12.6 → NOT "12.6%"
+        }
+    ]
+  },
+  "partition_3_buyer_insights": "Actionable insights for buyers with embedded Markdown tables showing market data, ratios, and pricing trends.",
+  "partition_4_seller_insights": "Actionable insights for sellers with embedded Markdown tables showing pricing strategies and demand segments by market.",
+  "partition_5_micro_market_breakdown": {
+    "cities": {
+      "Burnaby": "Markdown summary with multiple data tables showing benchmark prices, sales, listings, and price changes.",
+      "Coquitlam": "Markdown summary with market data tables.",
+      "Richmond": "Markdown summary with market data tables.",
+      "Vancouver_East": "Markdown summary with market data tables.",
+      "Vancouver_West": "Markdown summary with market data tables.",
+      "North_Vancouver": "Markdown summary with market data tables.",
+      "West_Vancouver": "Markdown summary with market data tables.",
+      "Maple_Ridge": "Markdown summary with market data tables.",
+      "Port_Coquitlam": "Markdown summary with market data tables.",
+      "Port_Moody": "Markdown summary with market data tables.",
+      "Squamish": "Markdown summary with market data tables.",
+      "Sunshine_Coast": "Markdown summary with market data tables.",
+      "Whistler": "Markdown summary with market data tables."
+    }
+  },
+  "partition_6_product_type_comparison": "Detailed comparison with embedded Markdown tables: Detached vs Townhouse vs Apartment with pricing, performance differences, sales volumes, and inventory data.",
+  "partition_7_inventory_absorption_analysis": "Interpretation of the sales-to-active ratio with embedded tables showing absorption rates, market sentiment, and comparative market data.",
+  "partition_8_realtor_talking_points": [
+    "10 bullet points realtors can use for presentations and client calls."
+  ],
+  "partition_9_marketing_content": {
+    "instagram": ["3 short captions optimized for IG"],
+    "linkedin": ["3 long-form posts with insights"],
+    "facebook": ["3 friendly summaries for FB"],
+    "headlines": ["5 strong headline options"]
+  },
+  "partition_10_newsletter_article": "400–500 word polished newsletter article in Markdown with embedded data tables.",
+  "partition_11_investor_insights": "Insights with embedded Markdown tables showing 3-year, 5-year, and 10-year performance data, growth rates, and opportunity zones.",
+  "partition_12_chart_data": {
+    "benchmark_prices": {
+      "detached": number,
+      "townhouse": number,
+      "apartment": number
+    },
+    "percentage_changes": {
+      "moM": number,
+      "qoQ": number,
+      "six_month": number,
+      "one_year": number
+    },
+    "city_level_benchmarks": {
+      "Burnaby": number,
+      "Coquitlam": number,
+      "Richmond": number,
+      "Vancouver_East": number,
+      "Vancouver_West": number,
+      "North_Vancouver": number,
+      "West_Vancouver": number,
+      "Maple_Ridge": number,
+      "Port_Coquitlam": number,
+      "Port_Moody": number,
+      "Squamish": number,
+      "Sunshine_Coast": number,
+      "Whistler": number
+    },
+    "sales_data": {
+      "detached": number,
+      "attached": number,
+      "apartment": number
+    },
+    "listings_data": {
+      "detached": number,
+      "attached": number,
+      "apartment": number
+    },
+    "absorption_rate": {
+      "overall_ratio": "string (e.g., '12.6%')",
+      "detached_ratio": "string",
+      "attached_ratio": "string",
+      "apartment_ratio": "string"
+    }
+  }
+}
+
+CRITICAL RULES FOR MARKDOWN TABLES:
+- EVERY partition with text MUST include at least 1-2 Markdown tables with real data from the PDF.
+- Tables should show: city/area names, benchmark prices, sales volumes, inventory counts, price changes (1M, 3M, 6M, 1Y, 3Y, 5Y, 10Y).
+- Use proper Markdown table syntax with pipes (|) and dashes (-).
+- Format table headers with alignment indicators (e.g., | Header | Right | Left |).
+- Include numerical data exactly as it appears in the PDF.
+- All data must be REAL from the PDF, not fabricated.
+
+CRITICAL RULES FOR JSON:
+- Use ONLY actual data contained in the PDF—do NOT fabricate, estimate, or leave any required field empty.
+- All numeric values must be numbers (no quotes). The absorption_rate values must be strings that include the '%' symbol.
+- partition_2.table_struct MUST contain one object per row from the benchmark table (area names exactly as in PDF).
+- partition_2.table_markdown must be a readable Markdown table matching the table_struct data.
+- partition_12.chart_data numeric fields MUST exactly match values in the PDF.
+- The output MUST be EXACTLY one JSON object with NO preface, NO explanation, NO markdown fences, NO surrounding text.
+- Do NOT include any notes or footers outside the JSON.
+- Output must be valid JSON parsable by json.loads().
+- CRITICAL: For multiline text in JSON strings (like LinkedIn posts with multiple paragraphs), use the literal newline character (press Enter) instead of the text "\n". The JSON parser will handle proper escaping.
+- When creating multiline content (LinkedIn posts, newsletter articles), use actual line breaks, NOT the characters backslash-n.
+- If you cannot fill any field because the PDF lacks the value, return a numeric 0 for numbers and an explanatory short string in the associated text field (but still return valid JSON).
+"""

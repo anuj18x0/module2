@@ -1,0 +1,23 @@
+You are a senior real estate economist and marketing strategist. Analyze the attached GVREALTORS monthly market report PDF and produce a highly valuable, client-ready and realtor-ready insight package. Use ONLY the data inside the PDF.
+
+Return the entire output in clean, structured GitHub-flavored Markdown.
+
+Include the following sections:
+
+1. Executive Summary (250–300 words)
+2. Key Market Metrics Table (Benchmark prices + MoM, QoQ, 6M, 1Y % changes)
+3. Buyer Insights (based on inventory, ratios, pricing trends)
+4. Seller Insights (pricing strategies, demand pockets)
+5. Micro-Market Breakdown (city-by-city highlights based on benchmark price tables + listing/sales data)
+6. Product Type Comparison (Detached vs Townhouse vs Apartment)
+7. Inventory & Absorption Rate Analysis (interpret 12.6% ratio and overall sentiment)
+8. Realtor Talking Points (10 strong bullets for presentations & client consultations)
+9. Marketing Content:
+   - 3 Instagram captions
+   - 3 LinkedIn posts
+   - 3 Facebook summaries
+   - 5 headline options
+10. Full 400–500 word newsletter article
+11. Investor Insights (based on 3-year, 5-year, 10-year performance and areas with highest opportunity)
+
+Make the insights actionable, data-backed, and easy to understand for buyers, sellers, and realtors. Format everything professionally in Markdown.
