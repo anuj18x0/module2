@@ -109,6 +109,28 @@ def get_report(month: str, year: str = None):
     if not report:
         year_msg = f" {year}" if year else ""
         raise HTTPException(status_code=404, detail=f"Report for {month}{year_msg} not found")
+    
+    # Check if infographic data exists, if not try to generate it
+    if not report.get("data", {}).get("visual_infographic_data"):
+        try:
+            print(f"⚠️  No infographic data found, attempting to generate...")
+            report_year = year or report.get("year", "2025")
+            
+            url = f"https://members.gvrealtors.ca/news/GVR-Stats-Package-{month}-{report_year}.pdf"
+            print(f"Downloading from: {url}")
+            
+            # Generate infographic data
+            infographic_json = generate_infographic_data(url, month, report_year)
+            infographic_data = json.loads(infographic_json)
+            
+            # Update the report with infographic data
+            report["data"]["visual_infographic_data"] = infographic_data
+            mongo_service.update_infographic_data(month, report_year, infographic_data)
+            print(f"✅ Generated and saved infographic data for {month} {report_year}")
+        except Exception as e:
+            print(f"⚠️  Could not auto-generate infographic: {str(e)}")
+            # Still return the report even if infographic generation fails
+    
     return report
 
 @app.delete("/reports/{month}")
@@ -127,14 +149,16 @@ async def generate_infographic(request: MonthRequest):
         year = request.year
         print(f"Generating infographic for: {month} {year}")
         
-        # Check if report with infographic already exists
+        # Check if infographic already exists in database
         existing_report = mongo_service.get_report(month, year)
-        if existing_report and existing_report.get("data", {}).get("visual_infographic_data"):
-            print(f"✅ Infographic for {month} {year} already exists")
-            return {
-                "message": "Infographic already exists",
-                "visual_infographic_data": existing_report["data"]["visual_infographic_data"]
-            }
+        if existing_report:
+            infographic_data = existing_report.get("data", {}).get("visual_infographic_data")
+            if infographic_data:
+                print(f"✅ Infographic for {month} {year} already exists in database")
+                return {
+                    "message": "Infographic already exists",
+                    "visual_infographic_data": infographic_data
+                }
         
         print(f"Generating new infographic data...")
         
@@ -148,12 +172,11 @@ async def generate_infographic(request: MonthRequest):
         
         print("Infographic data generated successfully")
         
-        # Update existing report or create new one with only infographic data
+        # Update existing report with infographic data
         if existing_report:
-            # Update existing report with infographic data
-            existing_report["data"]["visual_infographic_data"] = infographic_data
-            mongo_service.save_report(month, year, existing_report["data"])
-            print("Updated existing report with infographic data")
+            # Use dedicated update method for efficiency
+            mongo_service.update_infographic_data(month, year, infographic_data)
+            print("✅ Updated existing report with infographic data")
         else:
             # Create minimal report with only infographic data
             minimal_report = {
@@ -162,7 +185,7 @@ async def generate_infographic(request: MonthRequest):
                 "visual_infographic_data": infographic_data
             }
             mongo_service.save_report(month, year, minimal_report)
-            print("Created new report with infographic data")
+            print("✅ Created new report with infographic data")
         
         return {
             "message": "Infographic generated successfully",
@@ -239,6 +262,17 @@ async def compare_cities_endpoint(request: CityComparisonRequest):
                 status_code=400, 
                 detail="Please provide 2-3 cities for comparison"
             )
+        
+        # Check if comparison already exists in database
+        existing_comparison = mongo_service.get_city_comparison_by_month_and_cities(month, year, cities)
+        if existing_comparison:
+            print(f"✅ City comparison for {month} {year} ({', '.join(cities)}) already exists")
+            return {
+                "message": "Comparison already exists",
+                "data": existing_comparison
+            }
+        
+        print(f"Generating new city comparison...")
         
         # Generate comparison
         comparison_data = compare_cities(month, year, cities)

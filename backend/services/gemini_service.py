@@ -15,7 +15,7 @@ init(
 
 model = GenerativeModel("gemini-2.5-flash")
 
-def generate_market_report(month, year, pdf_path=None):
+def generate_market_report(url, month, year):
   """
   Generate market report from PDF
   Args:
@@ -25,6 +25,8 @@ def generate_market_report(month, year, pdf_path=None):
   """
   print(f"Starting report generation for {month} {year}")
   
+  pdf_path = get_monthly_report(url)
+
   try:
     if pdf_path:
       # Use local PDF file
@@ -120,10 +122,10 @@ JSON Schema:
     "main_statistics": [
       {
         "label": "NEW LISTINGS",
-        "current": "string (e.g., '2,210')",
-        "pct_change": number (e.g., -25.5),
-        "prev_month": "string (e.g., '2,967')",
-        "prev_year": "string with percentage (e.g., '2,367 (-6.6%)')"
+        "current": "string",
+        "pct_change": number,
+        "prev_month": "string",
+        "prev_year": "string"
       },
       {
         "label": "ACTIVE LISTINGS",
@@ -179,7 +181,7 @@ CRITICAL RULES:
 - Return ONLY valid JSON, no markdown fences, no explanation text before/after.
 - All numeric values must be numbers (no quotes except absorption_rate strings and visual_infographic_data strings).
 - ALL data must be REAL from the PDF - do not fabricate numbers. Extract exact statistics.
-- visual_infographic_data is MANDATORY with complete main_statistics (4 items: new listings, active listings, total sales, average price) and benchmark_price_narratives (3 items: detached, townhomes, apartments).
+- visual_infographic_data is MANDATORY with complete main_statistics (4 items: new listings, active listings, total sales, average price) and benchmark_price_narratives (3 items: detached, townhomes, apartments) DONT NULL ANY VALUE.
 - For visual_infographic_data.main_statistics, calculate pct_change using: ((current - prev_month) / prev_month) * 100
 - Keep all content CONCISE to avoid token limit truncation.
 - All Markdown tables must be complete with proper syntax using pipes (|) and dashes (-).
@@ -189,7 +191,7 @@ CRITICAL RULES:
   * Use \\\\ for backslashes
   * City names with slashes (e.g., "Maple Ridge/Pitt Meadows") are fine
   * Ensure proper quote escaping within strings
-- newsletter_article is MANDATORY (700-800 words with REAL data).
+- newsletter_article is MANDATORY (500-600 words with REAL data).
 - Output must be valid, parsable JSON that passes JSON.parse() without errors.
 - Test your JSON mentally before outputting - ensure all brackets, braces, and quotes are balanced.
 """

@@ -83,6 +83,7 @@ class MongoService:
     def save_report(self, month: str, year: str, data: dict) -> str:
         """
         Save market report to MongoDB (local or Atlas)
+        Merges with existing data if document already exists
         
         Args:
             month: Month name (e.g., "October", "November")
@@ -97,19 +98,49 @@ class MongoService:
             return None
         
         try:
-            document = {
-                "month": month,
-                "data": data,
-                "created_at": datetime.utcnow(),
-                "json_valid": True,
-                "year": year,
-                "source": "Gemini API Analysis"
-            }
-            result = self.collection.insert_one(document)
-            print(f"✅ Saved to MongoDB with ID: {result.inserted_id}")
-            print(f"   Database: {self.db.name}")
-            print(f"   Collection: {self.collection.name}")
-            return str(result.inserted_id)
+            # Check if document exists
+            existing = self.collection.find_one({"month": month, "year": year})
+            
+            if existing:
+                # Merge data with existing document
+                existing_data = existing.get("data", {})
+                
+                # Merge: new data takes precedence, but keep existing fields not in new data
+                merged_data = {**existing_data, **data}
+                
+                # Update with merged data
+                update_doc = {
+                    "month": month,
+                    "data": merged_data,
+                    "updated_at": datetime.utcnow(),
+                    "json_valid": True,
+                    "year": year,
+                    "source": "Gemini API Analysis"
+                }
+                
+                result = self.collection.update_one(
+                    {"month": month, "year": year},
+                    {"$set": update_doc}
+                )
+                
+                print(f"✅ Updated existing report in MongoDB for {month} {year} (merged data)")
+                return str(existing["_id"])
+            else:
+                # Create new document
+                document = {
+                    "month": month,
+                    "data": data,
+                    "updated_at": datetime.utcnow(),
+                    "created_at": datetime.utcnow(),
+                    "json_valid": True,
+                    "year": year,
+                    "source": "Gemini API Analysis"
+                }
+                
+                result = self.collection.insert_one(document)
+                print(f"✅ Created new report in MongoDB with ID: {result.inserted_id}")
+                return str(result.inserted_id)
+                
         except Exception as e:
             print(f"❌ Failed to save to MongoDB: {e}")
             return None
@@ -190,6 +221,46 @@ class MongoService:
                 return False
         except Exception as e:
             print(f"❌ Failed to delete from MongoDB: {e}")
+            return False
+    
+    def update_infographic_data(self, month: str, year: str, infographic_data: dict) -> bool:
+        """
+        Update only the visual_infographic_data field in an existing report
+        
+        Args:
+            month: Month name
+            year: Year
+            infographic_data: Visual infographic data dictionary
+        
+        Returns:
+            True if successful, False otherwise
+        """
+        if not self.connected:
+            print("⚠️  MongoDB not connected, skipping update")
+            return False
+        
+        try:
+            result = self.collection.update_one(
+                {"month": month, "year": year},
+                {
+                    "$set": {
+                        "data.visual_infographic_data": infographic_data,
+                        "updated_at": datetime.utcnow()
+                    }
+                }
+            )
+            
+            if result.modified_count > 0:
+                print(f"✅ Updated infographic data for {month} {year}")
+                return True
+            elif result.matched_count > 0:
+                print(f"⚠️  Document found but no changes made for {month} {year}")
+                return True
+            else:
+                print(f"⚠️  No document found to update for {month} {year}")
+                return False
+        except Exception as e:
+            print(f"❌ Failed to update infographic data: {e}")
             return False
     
     def close(self):
